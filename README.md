@@ -1,5 +1,5 @@
 # SiemensJavaInternship2025
-
+(the link for the SiemensJavaInternship2025: https://github.com/SiemensJava2025/SiemensJava2025)
 A Spring Boot–powered REST API demonstrating a simple “Item” management microservice, built as part of the Siemens Java Internship 2025. This project showcases end-to-end CRUD operations, field validation, asynchronous processing, logging, and in-memory persistence.
 
 ## 🚀 Features
