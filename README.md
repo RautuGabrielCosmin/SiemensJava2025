@@ -1,132 +1,72 @@
-SiemensJavaInternship2025
+# SiemensJavaInternship2025
 
-Welcome to the SiemensJavaInternship2025 repository! This Spring Boot application demonstrates a full-featured CRUD REST API backed by an in-memory H2 database, complete with validation, logging, asynchronous processing, and robust error handling.
+A Spring Boot–powered REST API demonstrating a simple “Item” management microservice, built as part of the Siemens Java Internship 2025. This project showcases end-to-end CRUD operations, field validation, asynchronous processing, logging, and in-memory persistence.
 
-Table of Contents
+## 🚀 Features
 
-Project Overview
+- **CRUD Endpoints**  
+  - `GET /api/items` — list all items  
+  - `POST /api/items` — create a new item (with bean-validation)  
+  - `GET /api/items/{id}` — fetch a single item by ID  
+  - `PUT /api/items/{id}` — update an existing item  
+  - `DELETE /api/items/{id}` — remove an item  
 
-Architecture & Design
+- **Input Validation**  
+  - `@NotBlank` on all fields  
+  - Custom email format check via `@Pattern`
 
-Key Features
+- **Asynchronous Batch Processing**  
+  - `GET /api/items/process` triggers background processing of every item  
+  - Uses Spring’s `@Async`, `CompletableFuture`, a fixed 10-thread pool, and thread-safe collections
 
-Technology Stack
+- **Logging & Monitoring**  
+  - SLF4J + Logback configuration with console and rolling-file appenders  
+  - MDC support for contextual tracing
 
-Detailed Implementation
+- **In-Memory H2 Database**  
+  - Rapid prototyping with `spring.jpa.hibernate.ddl-auto=update`  
+  - H2 console enabled at `/h2-console`
 
-Entity Layer
+- **Automated Tests**  
+  - Unit tests for ID validation and bean constraints (JUnit 5 & TestNG)
 
-Repository Layer
+## 🏗️ Tech Stack
 
-Service Layer
+- Java 23 & Spring Boot 3.3.11  
+- Spring Data JPA (Hibernate)  
+- Jakarta Bean Validation (Hibernate Validator)  
+- H2 Database  
+- SLF4J / Logback  
+- JUnit 5 & TestNG  
+- Maven
 
-Controller Layer
-
-Validation & Error Handling
-
-Asynchronous Processing
-
-Logging
-
-Testing
-
-Configuration
-
-Running the Application
-
-Project Overview
-SiemensJavaInternship2025 is a sample Spring Boot application developed to showcase:
-
-CRUD operations on a simple Item resource via REST endpoints.
-
-Field validation using Jakarta Bean Validation.
-
-Asynchronous batch processing of entities with thread safety.
-
-In-memory H2 database for rapid prototyping.
-
-Comprehensive logging for tracing and debugging.
-
-Unit and integration tests to ensure code quality.
-
-This repository mirrors a real-world microservice implementation, complete with best practices around thread safety, resource management, and error handling.
-
-┌───────────────────┐       ┌───────────────────┐       ┌───────────────────┐
-│    Controllers    │──────▶│     Services      │──────▶│   Repositories    │
-│  (REST API Layer) │       │ (Business Logic)  │       │ (Data Access)     │
-└───────────────────┘       └───────────────────┘       └───────────────────┘
-Controller: Exposes HTTP endpoints under /api/items, handles validation and maps service responses to ResponseEntity.
-
-Service: Implements business logic (CRUD, validation checks, batch processing), uses Spring’s @Async and a fixed thread pool for concurrency, ensures thread safety with synchronized collections and atomic counters.
-
-Repository: Extends JpaRepository<Item,Long> for CRUD and provides a custom JPQL query (findAllIds()) to fetch only IDs for efficient batch processing.
-
-Key Features
-CRUD Endpoints
-
-GET /api/items – List all items
-
-POST /api/items – Create a new item
-
-GET /api/items/{id} – Retrieve an item by ID
-
-PUT /api/items/{id} – Update an existing item
-
-DELETE /api/items/{id} – Delete an item
-
-Validation
-
-Annotation-driven (@NotBlank, @Pattern) on each field.
-
-Custom regex for email format ensuring local@domain.tld compliance.
-
-Asynchronous Batch Processing
-
-GET /api/items/process triggers processItemsAsync().
-
-Uses CompletableFuture with a dedicated ExecutorService.
-
-Awaits all tasks via CompletableFuture.allOf(...) to guarantee completion before returning.
-
-Thread-safe accumulation using Collections.synchronizedList and AtomicInteger.
-
-Logging
-
-SLF4J + Logback configuration.
-
-Console and rolling file appenders for real-time and persisted logs.
-
-MDC support (%X{userId}) to track context, with timestamps and thread names.
-
-Error Handling
-
-Validation errors return 400 Bad Request with field-level messages.
-
-Non-existent resources return 404 Not Found.
-
-IllegalArgumentException for invalid IDs yields clear error messages.
-
-Testing
-
-Unit tests for service methods (ID validation).
-
-Bean validation tests to confirm constraint enforcement.
-
-Technology Stack
-Java 23
-
-Spring Boot 3.3.11
-
-Spring Data JPA
-
-H2 Database (in-memory)
-
-Jakarta Bean Validation (Hibernate Validator)
-
-SLF4J + Logback for logging
-
-JUnit 5 & TestNG for testing
-
-Maven for build and dependency management
+## 📂 Project Structure
+src/
+├─ main/
+│ ├─ java/com/siemens/internship/
+│ │ ├─ InternshipApplication.java // bootstrap
+│ │ ├─ entity/Item.java // JPA entity + validation
+│ │ ├─ repository/ItemRepository.java
+│ │ ├─ service/ItemService.java // business logic + async
+│ │ └─ web/ItemController.java // REST API
+│ └─ resources/
+│ ├─ application.properties // H2 & JPA settings
+│ └─ logback.xml // logging config
+└─ test/
+└─ InternshipApplicationTests.java // unit & validation tests
 
 
+## ▶️ Getting Started
+
+1. **Clone**  
+   ```bash
+   git clone https://github.com/yourusername/SiemensJavaInternship2025.git
+   cd SiemensJavaInternship2025
+     
+2. Build & Run
+   mvn clean install
+   mvn spring-boot:run
+
+3. Explore:
+   API: http://localhost:8081/api/items
+   H2 console: http://localhost:8081/h2-console
